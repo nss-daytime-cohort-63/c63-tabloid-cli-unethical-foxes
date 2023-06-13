@@ -32,15 +32,8 @@ namespace TabloidCLI.UserInterfaceManagers
             switch (choice)
             {
                 case "1":
-                    List<Author> authors = _authorRepository.GetAll();
-                    foreach (Author a in authors)
-                    {
-                        Console.WriteLine($"Author {a.Id}:  {a.FirstName} {a.LastName}  {a.Bio}");
-                    }
-                    Console.Write("Press any key to continue");
-                    Console.ReadKey();
-                    break;
-                    
+                    List();
+                    return this;
                 case "2":
                     Author author = Choose();
                     if (author == null)
