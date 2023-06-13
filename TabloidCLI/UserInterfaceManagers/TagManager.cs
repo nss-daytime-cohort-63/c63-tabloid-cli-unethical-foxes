@@ -36,6 +36,7 @@ namespace TabloidCLI.UserInterfaceManagers
                     return this;
                 case "2":
                     Add();
+                   
                     return this;
                 case "3":
                     Edit();
@@ -54,15 +55,22 @@ namespace TabloidCLI.UserInterfaceManagers
         private void List()
         {
             List<Tag> tags = _tagRepository.GetAll();
+
             foreach (Tag tag in tags)
             {
-                Console.WriteLine(tag);
+                Console.WriteLine($"{tag.Id} {tag.Name}");
             }
+
         }
 
         private void Add()
         {
-            throw new NotImplementedException();
+           Console.WriteLine("New Tag");
+            Tag tag = new Tag();
+
+            Console.Write("Tag Name: ");
+            tag.Name = Console.ReadLine();
+            _tagRepository.Insert(tag);
         }
 
         private void Edit()
