@@ -43,22 +43,23 @@ namespace TabloidCLI
 
         public Journal Get(int id) 
         {
-            
+            //finish later
+            return null;
         }
 
         public void Insert(Journal journal) 
         {
-            
+            //finish later
         }
 
         public void Update(Journal journal) 
         {
-            
+            //fnsh ltr
         }
 
         public void Delete(int id) 
         {
-            
+            //fnsh ltr
         }
     }
 }
