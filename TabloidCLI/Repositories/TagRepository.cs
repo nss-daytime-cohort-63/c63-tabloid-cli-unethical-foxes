@@ -89,7 +89,17 @@ namespace TabloidCLI
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"DELETE FROM Tag WHERE id = @id";
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
 
         public SearchResults<Author> SearchAuthors(string tagName)
@@ -100,13 +110,13 @@ namespace TabloidCLI
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"SELECT a.id,
-                                               a.FirstName,
-                                               a.LastName,
-                                               a.Bio
-                                          FROM Author a
-                                               LEFT JOIN AuthorTag at on a.Id = at.AuthorId
-                                               LEFT JOIN Tag t on t.Id = at.TagId
-                                         WHERE t.Name LIKE @name";
+                                       a.FirstName,
+                                       a.LastName,
+                                       a.Bio
+                                       FROM Author a
+                                       LEFT JOIN AuthorTag at on a.Id = at.AuthorId
+                                       LEFT JOIN Tag t on t.Id = at.TagId
+                                       WHERE t.Name LIKE @name";
                     cmd.Parameters.AddWithValue("@name", $"%{tagName}%");
                     SqlDataReader reader = cmd.ExecuteReader();
 
