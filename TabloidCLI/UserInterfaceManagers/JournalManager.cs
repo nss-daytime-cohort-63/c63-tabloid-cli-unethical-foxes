@@ -41,7 +41,8 @@ namespace TabloidCLI.UserInterfaceManagers
                     Add();
                     return this;
                 case "4":
-                    //
+                    Edit();
+                    return this;
                 case "5":
                     Remove();
                     return this;
@@ -107,6 +108,31 @@ namespace TabloidCLI.UserInterfaceManagers
             journalEntry.CreateDateTime = DateTime.Now;
 
             _journalRepository.Insert(journalEntry);
+        }
+
+        private void Edit()
+        {
+            Journal journalToEdit = Choose("Which journal would you like to edit?");
+            if (journalToEdit == null)
+            {
+                return;
+            }
+
+            Console.WriteLine();
+            Console.Write("New title (blank to leave unchanged): ");
+            string title = Console.ReadLine();
+            if (!string.IsNullOrEmpty(title)) 
+            {
+                journalToEdit.Title = title;
+            }
+            Console.Write("New content (blank to leave unchanged): ");
+            string content = Console.ReadLine();
+            if (!string.IsNullOrEmpty (content)) 
+            {
+                journalToEdit.Content = content;
+            }
+
+            _journalRepository.Update(journalToEdit);
         }
 
         private void Remove()
