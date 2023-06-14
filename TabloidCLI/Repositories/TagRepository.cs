@@ -10,6 +10,7 @@ namespace TabloidCLI
     public class TagRepository : DatabaseConnector, IRepository<Tag>
     {
         public TagRepository(string connectionString) : base(connectionString) { }
+        
 
         public List<Tag> GetAll()
         {
