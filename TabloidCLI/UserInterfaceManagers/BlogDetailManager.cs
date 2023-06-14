@@ -1,11 +1,11 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using TabloidCLI.Models;
 using TabloidCLI.Repositories;
 
 namespace TabloidCLI.UserInterfaceManagers
 {
-    internal class BlogDetailManager : IUserInterfaceManager
+    public class BlogDetailManager : IUserInterfaceManager
     {
         private IUserInterfaceManager _parentUI;
         private BlogRepository _blogRepository;
