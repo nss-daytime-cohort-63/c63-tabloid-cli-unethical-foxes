@@ -10,6 +10,7 @@ namespace TabloidCLI
     public class TagRepository : DatabaseConnector, IRepository<Tag>
     {
         public TagRepository(string connectionString) : base(connectionString) { }
+        
 
         public List<Tag> GetAll()
         {
@@ -70,7 +71,20 @@ namespace TabloidCLI
 
         public void Update(Tag tag)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"UPDATE Tag
+                                        SET Name = @name
+                                        WHERE id = @id";
+                    cmd.Parameters.AddWithValue("@name", tag.Name);
+                    cmd.Parameters.AddWithValue("@id", tag.Id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
 
         public void Delete(int id)

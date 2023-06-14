@@ -5,7 +5,7 @@ using TabloidCLI.Repositories;
 
 namespace TabloidCLI.UserInterfaceManagers
 {
-    internal class AuthorDetailManager : IUserInterfaceManager
+    public class AuthorDetailManager : IUserInterfaceManager
     {
         private IUserInterfaceManager _parentUI;
         private AuthorRepository _authorRepository;
