@@ -1,6 +1,7 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using TabloidCLI.Models;
 
 namespace TabloidCLI.UserInterfaceManagers
