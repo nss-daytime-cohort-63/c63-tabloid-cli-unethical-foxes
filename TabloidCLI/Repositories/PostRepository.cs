@@ -68,7 +68,53 @@ namespace TabloidCLI.Repositories
 
         public Post Get(int id)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand()) 
+                {
+                    //SQL query may need author and blog tags later
+                    cmd.CommandText = @"SELECT p.Id AS postId, p.Title AS postTitle, p.URL AS postUrl, p.PublishDateTime AS postPublishDate, 
+                                        a.Id AS authorId, a.FirstName AS authorFirstName, a.LastName AS authorLastName, a.Bio AS authorBio,
+                                        b.Id AS blogId,b.Title AS blogTitle, b.URL AS blogUrl
+                                        FROM Post p
+                                        LEFT JOIN Author a ON p.AuthorId = a.Id
+                                        LEFT JOIN Blog b ON p.BlogId = b.Id
+                                        WHERE p.Id = @id";
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    Post post = null;
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read()) 
+                    {   
+                        if (post == null)
+                        {
+                            post = new Post()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("postId")), 
+                                Title = reader.GetString(reader.GetOrdinal("postTitle")),
+                                Url = reader.GetString(reader.GetOrdinal("postUrl")),
+                                PublishDateTime = reader.GetDateTime(reader.GetOrdinal("postPublishDate")),
+                                Author = new Author()
+                                {
+                                    Id = reader.GetInt32(reader.GetOrdinal("authorId")),
+                                    FirstName = reader.GetString(reader.GetOrdinal("authorFirstName")),
+                                    LastName = reader.GetString(reader.GetOrdinal("authorLastName")),
+                                    Bio = reader.GetString(reader.GetOrdinal("authorBio")),
+                                },
+                                Blog = new Blog()
+                                {
+                                    Id = reader.GetInt32(reader.GetOrdinal("blogId")),
+                                    Title = reader.GetString(reader.GetOrdinal("blogTitle")),
+                                    Url = reader.GetString(reader.GetOrdinal("blogUrl"))
+                                }
+
+                            };
+                        }
+                    }
+                    return post;
+                }
+            }
         }
 
         public List<Post> GetByAuthor(int authorId)

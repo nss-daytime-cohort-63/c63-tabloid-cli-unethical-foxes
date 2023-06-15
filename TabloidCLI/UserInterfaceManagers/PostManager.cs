@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using TabloidCLI.Models;
@@ -27,12 +28,13 @@ namespace TabloidCLI.UserInterfaceManagers
 
         public IUserInterfaceManager Execute()
         {
-            Console.WriteLine("Journal Menu:");
+            Console.WriteLine("Post Menu:");
             Console.WriteLine("1) List Posts");
-            Console.WriteLine("2) Add Post");
-            Console.WriteLine("3) Edit Post");
-            Console.WriteLine("4) Remove Post");
-            Console.WriteLine("5) Search by Author");
+            Console.WriteLine("2) Post Details");
+            Console.WriteLine("3) Add Post");
+            Console.WriteLine("4) Edit Post");
+            Console.WriteLine("5) Remove Post");
+            Console.WriteLine("6) Search by Author");
             Console.WriteLine("0) Go Back");
 
             Console.Write("> ");
@@ -43,13 +45,23 @@ namespace TabloidCLI.UserInterfaceManagers
                     List();
                     return this;
                 case "2":
+                    Post post = Choose();
+                    if (post == null)
+                    {
+                        return this;
+                    }
+                    else
+                    {
+                        return new PostDetailManager (this, _connectionString, post.Id); //return new postDetailManager
+                    }
+                case "3":
                     AddPost();
                     return this;
-                case "3":
-                //
                 case "4":
                 //
                 case "5":
+                //
+                case "6":
                     SearchByAuthor();
                     return this;
                 case "0":
@@ -66,6 +78,35 @@ namespace TabloidCLI.UserInterfaceManagers
             foreach (Post post in posts)
             {
                 Console.WriteLine($"{post.Title} URL: {post.Url}");
+            }
+        }
+
+        private Post Choose(string prompt = null)
+        {
+            if (prompt == null)
+            {
+                prompt = "Please choose a post: ";
+            }
+            Console.WriteLine (prompt);
+
+            List<Post> posts = _postRepository.GetAll();
+            for (int i = 0; i < posts.Count; i++) 
+            {
+                Post post = posts[i];
+                Console.WriteLine($" {i + 1}) {post.Title}");
+            }
+            Console.Write("> ");
+
+            string input = Console.ReadLine();
+            try
+            {
+                int choice = int.Parse(input);
+                return posts[choice - 1];
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Invalid Selection");
+                return null;
             }
         }
 
