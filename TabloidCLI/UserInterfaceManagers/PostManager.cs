@@ -13,6 +13,7 @@ namespace TabloidCLI.UserInterfaceManagers
         private readonly IUserInterfaceManager _parentUI;
         private PostRepository _postRepository;
         private AuthorRepository _authorRepository;
+        private BlogRepository _blogRepository;
         private string _connectionString;
 
         public PostManager(IUserInterfaceManager parentUI, string connectionString)
@@ -20,6 +21,7 @@ namespace TabloidCLI.UserInterfaceManagers
             _parentUI = parentUI;
             _postRepository = new PostRepository(connectionString);
             _authorRepository = new AuthorRepository(connectionString);
+            _blogRepository = new BlogRepository(connectionString);
             _connectionString = connectionString;
         }
 
@@ -41,7 +43,8 @@ namespace TabloidCLI.UserInterfaceManagers
                     List();
                     return this;
                 case "2":
-                //;
+                    AddPost();
+                    return this;
                 case "3":
                 //
                 case "4":
@@ -89,6 +92,61 @@ namespace TabloidCLI.UserInterfaceManagers
         private void AddPost()
         {
             // complete later
+            Console.WriteLine("New Post");
+            Post post = new Post();
+
+            Console.Write("Title: ");
+            post.Title = Console.ReadLine();
+
+            Console.Write("URL: ");
+            post.Url = Console.ReadLine();
+
+            Console.Write("Publish Date ");
+            post.PublishDateTime = DateTime.Now;
+
+            Console.WriteLine("Select which Author wrote this post by ID");
+            List<Author> authors = _authorRepository.GetAll();
+            foreach (Author author in authors)
+            {
+                Console.WriteLine($"{author.Id}) {author.FirstName} {author.LastName}");
+            }
+            int authorid = int.Parse(Console.ReadLine());
+            foreach (Author author in authors)
+            {
+                if (authorid == author.Id)
+                {
+                    Author author1 = new Author();
+                    {
+                        author1.Id = author.Id;
+                        author1.FirstName = author.FirstName;
+                        author1.LastName = author.LastName;
+                        author1.Bio = author.Bio;
+                    }
+                    post.Author = author1;
+                }
+            }
+
+            Console.WriteLine("Select which Blog this post is from by ID");
+            List<Blog> blogs = _blogRepository.GetAll();
+            foreach (Blog blog in blogs)
+            {
+                Console.WriteLine($"{blog.Id} Title: {blog.Title}");
+            }
+            int blogId = int.Parse(Console.ReadLine());
+            foreach (Blog blog in blogs)
+            {
+                if(blogId == blog.Id)
+                {
+                    Blog blog1 = new Blog();
+                    {
+                        blog1.Id = blog.Id;
+                        blog1.Title = blog.Title;
+                        blog1.Url = blog.Url;
+                    }
+                    post.Blog = blog1;
+                }
+            }
+            _postRepository.Insert(post);
         }
 
         private void RemovePost()
