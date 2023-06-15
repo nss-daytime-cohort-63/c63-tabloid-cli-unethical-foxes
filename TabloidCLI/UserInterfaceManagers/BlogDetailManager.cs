@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using TabloidCLI.Models;
+using TabloidCLI.Repositories;
 
 namespace TabloidCLI.UserInterfaceManagers
 {
@@ -8,6 +9,7 @@ namespace TabloidCLI.UserInterfaceManagers
     {
         private IUserInterfaceManager _parentUI;
         private BlogRepository _blogRepository;
+        private PostRepository _postRepository;
         private TagRepository _tagRepository;
         private int _blogId;
 
@@ -15,6 +17,7 @@ namespace TabloidCLI.UserInterfaceManagers
         {
             _parentUI = parentUI;
             _blogRepository = new BlogRepository(connectionString);
+            _postRepository = new PostRepository(connectionString);
             _tagRepository = new TagRepository(connectionString);
             _blogId = blogId;
         }
@@ -26,6 +29,7 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.WriteLine(" 1) View");
             Console.WriteLine(" 2) Add Tag");
             Console.WriteLine(" 3) Remove Tag");
+            Console.WriteLine(" 4) View Posts");
             Console.WriteLine(" 0) Go Back");
 
             Console.Write("> ");
@@ -40,6 +44,9 @@ namespace TabloidCLI.UserInterfaceManagers
                     return this;
                 case "3":
                     RemoveTag();
+                    return this;
+                case "4":
+                    ViewPosts();
                     return this;
                 case "0":
                     return _parentUI;
@@ -114,6 +121,25 @@ namespace TabloidCLI.UserInterfaceManagers
             catch (Exception ex)
             {
                 Console.WriteLine("Invalid Selection.  Won't remove any tags.");
+            }
+        }
+
+        private void ViewPosts()
+        {
+            try
+            {
+                List<Post> posts = _blogRepository.GetPostByBlogId(_blogId);
+                foreach (Post post in posts)
+                {
+                    Console.WriteLine("Posts:");
+                    Console.WriteLine(post);
+                }
+                Console.ReadKey();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("There are no posts on this blog");
+                Console.ReadKey();
             }
         }
     }
