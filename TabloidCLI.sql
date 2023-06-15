@@ -53,6 +53,7 @@ CREATE TABLE Note (
     PostId INTEGER NOT NULL,
     
     CONSTRAINT FK_Note_Posti FOREIGN KEY(PostId) REFERENCES Post(Id)
+    ON DELETE CASCADE
 );
 
 CREATE TABLE Tag (
@@ -74,7 +75,7 @@ CREATE TABLE PostTag (
     PostId INTEGER NOT NULL,
     TagId INTEGER NOT NULL,
 
-    CONSTRAINT FK_PostTag_Post FOREIGN KEY(PostId) REFERENCES Post(Id),
+    CONSTRAINT FK_PostTag_Post FOREIGN KEY(PostId) REFERENCES Post(Id) ON DELETE CASCADE,
     CONSTRAINT FK_PostTag_Tag FOREIGN KEY(TagId) REFERENCES Tag(Id)
 );
 
@@ -108,15 +109,28 @@ INSERT INTO Blog (Title, URL) VALUES ( 'NETFLIX Tech Blog', 'https://netflixtech
 INSERT INTO Blog (Title, URL) VALUES ( 'jakearchibald.com', 'https://jakearchibald.com/' );
 INSERT INTO Blog (Title, URL) VALUES ( 'Develop Together', 'https://dev.to/' );
 INSERT INTO Blog (Title, URL) VALUES ( 'Scott Hanselman Blog', 'https://www.hanselman.com/blog/' );
-INSERT INTO Post ( Title, URL, PublishDateTime, AuthorId, BlogId ) VALUES ('Forms of notional machines', 'https://www.felienne.com/archives/6392', '2019-07-12', 3, 3);
 
---INSERT INTO Note ( Title, Content, CreateDateTime, PostId ) VALUES ();
+INSERT INTO Post ( Title, URL, PublishDateTime, AuthorId, BlogId ) VALUES ('Forms of notional Cinnamon', 'https://www.felienne.com/archives/6392', '2019-07-12', 3, 3);
+INSERT INTO Post ( Title, URL, PublishDateTime, AuthorId, BlogId ) VALUES ('Forms of notional Ketchup', 'https://www.felienne.com/archives/546984', '2019-07-12', 1, 4);
+INSERT INTO Post ( Title, URL, PublishDateTime, AuthorId, BlogId ) VALUES ('Forms of notional Paprika', 'https://www.felienne.com/archives/6874', '2019-07-12', 2, 2);
+INSERT INTO Post ( Title, URL, PublishDateTime, AuthorId, BlogId ) VALUES ('Forms of notional Mustard', 'https://www.felienne.com/archives/3527', '2019-07-12', 4, 1);
+INSERT INTO Post ( Title, URL, PublishDateTime, AuthorId, BlogId ) VALUES ('Forms of notional Sand', 'https://www.felienne.com/archives/684856', '2019-07-12', 5, 5);
+INSERT INTO Post ( Title, URL, PublishDateTime, AuthorId, BlogId ) VALUES ('Forms of notional Pepper', 'https://www.felienne.com/archives/789654', '2019-07-12', 1, 6);
+INSERT INTO Post ( Title, URL, PublishDateTime, AuthorId, BlogId ) VALUES ('Forms of notional Salt', 'https://www.felienne.com/archives/32168', '2019-07-12', 3, 7);
+
+INSERT INTO Note ( Title, Content, CreateDateTime, PostId ) VALUES ('Random', 'Educational', CURRENT_TIMESTAMP, 1);
+INSERT INTO Note ( Title, Content, CreateDateTime, PostId ) VALUES ('Specific', 'Stupid', CURRENT_TIMESTAMP, 3);
+INSERT INTO Note ( Title, Content, CreateDateTime, PostId ) VALUES ('Semi-Specific', 'Noneducational', CURRENT_TIMESTAMP, 2);
+INSERT INTO Note ( Title, Content, CreateDateTime, PostId ) VALUES ('Not Random', 'Semi-Educational', CURRENT_TIMESTAMP, 5);
 
 INSERT INTO Tag ( Name ) VALUES ( 'nerdy' );
 
 --INSERT INTO AuthorTag ( AuthorId, TagId) VALUES ( );
 
---INSERT INTO PostTag ( PostId, TagId ) VALUES ( );
+INSERT INTO PostTag ( PostId, TagId ) VALUES (1, 1 );
+INSERT INTO PostTag ( PostId, TagId ) VALUES (5, 2 );
+INSERT INTO PostTag ( PostId, TagId ) VALUES (6, 3 );
+INSERT INTO PostTag ( PostId, TagId ) VALUES (7, 4 );
 
 --INSERT INTO BlogTag ( BlogId, TagId ) VALUES ( );
 

@@ -29,13 +29,13 @@ namespace TabloidCLI.UserInterfaceManagers
         public IUserInterfaceManager Execute()
         {
             Console.WriteLine("Post Menu:");
-            Console.WriteLine("1) List Posts");
-            Console.WriteLine("2) Post Details");
-            Console.WriteLine("3) Add Post");
-            Console.WriteLine("4) Edit Post");
-            Console.WriteLine("5) Remove Post");
-            Console.WriteLine("6) Search by Author");
-            Console.WriteLine("0) Go Back");
+            Console.WriteLine(" 1) List Posts");
+            Console.WriteLine(" 2) Post Details");
+            Console.WriteLine(" 3) Add Post");
+            Console.WriteLine(" 4) Edit Post");
+            Console.WriteLine(" 5) Remove Post");
+            Console.WriteLine(" 6) Search by Author");
+            Console.WriteLine(" 0) Go Back");
 
             Console.Write("> ");
             string choice = Console.ReadLine();
@@ -60,7 +60,8 @@ namespace TabloidCLI.UserInterfaceManagers
                 case "4":
                 //
                 case "5":
-                //
+                    RemovePost();
+                    return this;
                 case "6":
                     SearchByAuthor();
                     return this;
@@ -132,7 +133,6 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void AddPost()
         {
-            // complete later
             Console.WriteLine("New Post");
             Post post = new Post();
 
@@ -142,7 +142,6 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.Write("URL: ");
             post.Url = Console.ReadLine();
 
-            Console.Write("Publish Date ");
             post.PublishDateTime = DateTime.Now;
 
             Console.WriteLine("Select which Author wrote this post by ID");
@@ -151,6 +150,7 @@ namespace TabloidCLI.UserInterfaceManagers
             {
                 Console.WriteLine($"{author.Id}) {author.FirstName} {author.LastName}");
             }
+            Console.Write("> ");
             int authorid = int.Parse(Console.ReadLine());
             foreach (Author author in authors)
             {
@@ -171,8 +171,9 @@ namespace TabloidCLI.UserInterfaceManagers
             List<Blog> blogs = _blogRepository.GetAll();
             foreach (Blog blog in blogs)
             {
-                Console.WriteLine($"{blog.Id} Title: {blog.Title}");
+                Console.WriteLine($"{blog.Id}) Title: {blog.Title}");
             }
+            Console.Write("> ");
             int blogId = int.Parse(Console.ReadLine());
             foreach (Blog blog in blogs)
             {
@@ -192,7 +193,12 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void RemovePost()
         {
-            // complete later
+            Post postToDelete = Choose("Which post would you like to remove?");
+            if(postToDelete != null)
+            {
+                _postRepository.Delete(postToDelete.Id);
+            }
+
         }
 
         private void EditPost()
