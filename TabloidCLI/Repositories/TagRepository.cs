@@ -186,7 +186,7 @@ namespace TabloidCLI
                                   p.Url
                                   FROM Post p
                                   LEFT JOIN PostTag pt on p.Id = pt.PostId
-                                  LEFT JOIN Post p on p.Id = pt.TagId
+                                  LEFT JOIN Tag t on t.Id = pt.TagId
                                   WHERE t.Name LIKE @name";
                 cmd.Parameters.AddWithValue("@name", $"%{tagName}%");
                 SqlDataReader reader = cmd.ExecuteReader();
