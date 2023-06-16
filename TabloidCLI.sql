@@ -124,6 +124,10 @@ INSERT INTO Note ( Title, Content, CreateDateTime, PostId ) VALUES ('Semi-Specif
 INSERT INTO Note ( Title, Content, CreateDateTime, PostId ) VALUES ('Not Random', 'Semi-Educational', CURRENT_TIMESTAMP, 5);
 
 INSERT INTO Tag ( Name ) VALUES ( 'nerdy' );
+INSERT INTO Tag ( Name ) VALUES ( 'cool' );
+INSERT INTO Tag ( Name ) VALUES ( 'sucks' );
+INSERT INTO Tag ( Name ) VALUES ( 'great' );
+
 
 --INSERT INTO AuthorTag ( AuthorId, TagId) VALUES ( );
 
