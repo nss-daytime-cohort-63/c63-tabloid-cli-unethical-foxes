@@ -9,12 +9,14 @@ namespace TabloidCLI.UserInterfaceManagers
     {
         private IUserInterfaceManager _parentUI;
         private PostRepository _postRepository;
+        private TagRepository _tagRepository;
         private int _postId;
 
         public PostDetailManager(IUserInterfaceManager parentUI, string connectionString, int postId)
         {
             _parentUI = parentUI;
             _postRepository = new PostRepository(connectionString);
+            _tagRepository = new TagRepository(connectionString);
             _postId = postId;
         }
 
@@ -31,7 +33,7 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.Write("> ");
             string choice = Console.ReadLine();
 
-            switch(choice)
+            switch (choice)
             {
                 case "1":
                     View();
@@ -41,7 +43,8 @@ namespace TabloidCLI.UserInterfaceManagers
                 case "3":
                     //
                 case "4":
-                    //
+                    NoteManagement();
+                    return this;
                 case "0":
                     return _parentUI;
                 default:
@@ -56,6 +59,12 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.WriteLine($"Title: {post.Title}");
             Console.WriteLine($"URL: {post.Url}");
             Console.WriteLine($"Publication Date: {post.PublishDateTime}");
+        }
+
+        private void NoteManagement()
+        {
+            NoteManager noteManager = new NoteManager(this, _postRepository.ConnectionString, _postId);
+            noteManager.Execute();
         }
     }
 }
