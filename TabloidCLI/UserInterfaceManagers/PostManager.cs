@@ -52,13 +52,14 @@ namespace TabloidCLI.UserInterfaceManagers
                     }
                     else
                     {
-                        return new PostDetailManager (this, _connectionString, post.Id); //return new postDetailManager
+                        return new PostDetailManager(this, _connectionString, post.Id); //return new postDetailManager
                     }
                 case "3":
                     AddPost();
                     return this;
                 case "4":
-                //
+                    EditPost();
+                    return this;
                 case "5":
                     RemovePost();
                     return this;
@@ -88,10 +89,10 @@ namespace TabloidCLI.UserInterfaceManagers
             {
                 prompt = "Please choose a post: ";
             }
-            Console.WriteLine (prompt);
+            Console.WriteLine(prompt);
 
             List<Post> posts = _postRepository.GetAll();
-            for (int i = 0; i < posts.Count; i++) 
+            for (int i = 0; i < posts.Count; i++)
             {
                 Post post = posts[i];
                 Console.WriteLine($" {i + 1}) {post.Title}");
@@ -142,7 +143,9 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.Write("URL: ");
             post.Url = Console.ReadLine();
 
-            post.PublishDateTime = DateTime.Now;
+            Console.Write("Date: ");
+            string publicationDateTime = Console.ReadLine();
+            post.PublishDateTime = DateTime.ParseExact(publicationDateTime, "dd/MM/yyyy", null);
 
             Console.WriteLine("Select which Author wrote this post by ID");
             List<Author> authors = _authorRepository.GetAll();
@@ -177,7 +180,7 @@ namespace TabloidCLI.UserInterfaceManagers
             int blogId = int.Parse(Console.ReadLine());
             foreach (Blog blog in blogs)
             {
-                if(blogId == blog.Id)
+                if (blogId == blog.Id)
                 {
                     Blog blog1 = new Blog();
                     {
@@ -194,7 +197,7 @@ namespace TabloidCLI.UserInterfaceManagers
         private void RemovePost()
         {
             Post postToDelete = Choose("Which post would you like to remove?");
-            if(postToDelete != null)
+            if (postToDelete != null)
             {
                 _postRepository.Delete(postToDelete.Id);
             }
@@ -203,7 +206,56 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void EditPost()
         {
-            // complete later
+            Post postToEdit = Choose("Which post would you like to edit?");
+            if (postToEdit == null)
+            {
+                return;
+            }
+
+            Console.WriteLine();
+
+            //Title Change
+            Console.Write("New title (blank to leave unchanged): ");
+            string title = Console.ReadLine();
+            if (!string.IsNullOrEmpty(title))
+            {
+                postToEdit.Title = title;
+            }
+
+            //Url Change
+            Console.Write("New url (blank to leave unchanged): ");
+            string url = Console.ReadLine();
+            if (!string.IsNullOrEmpty(url))
+            {
+                postToEdit.Url = url;
+            }
+
+            //PublicationDateTime Change
+            Console.Write("New publication date DD/MM/YYYY (blank to leave unchanged): ");
+            string publicationDateTime = Console.ReadLine();
+            if (!string.IsNullOrEmpty(publicationDateTime))
+            {
+                postToEdit.PublishDateTime = DateTime.ParseExact(publicationDateTime,"dd/MM/yyyy", null);
+            }
+
+            //Author Change
+            Console.Write("New author (blank to leave unchanged): ");
+            string Author = Console.ReadLine();
+            if (!string.IsNullOrEmpty(Author))
+            {
+                postToEdit.Author.Id = int.Parse(Author);
+            }
+
+            //Blog Change
+            Console.Write("New blog (blank to leave unchanged): ");
+            string Blog = Console.ReadLine();
+            if (!string.IsNullOrEmpty(Blog))
+            {
+                postToEdit.Blog.Id = int.Parse(Blog);
+            }
+
+            _postRepository.Update(postToEdit);
+
         }
     }
 }
