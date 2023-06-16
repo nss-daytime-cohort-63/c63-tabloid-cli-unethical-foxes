@@ -81,14 +81,21 @@ namespace TabloidCLI.UserInterfaceManagers
             _noteRepository.Insert(note);
         }
 
-        private Note Choose(string prompt = null)
+        private Note Choose(string prompt = null, int postId = 0)
         {
             if (prompt == null)
             {
                 prompt = "Please choose a note: ";
             }
             Console.WriteLine(prompt);
+
             List<Note> notes = _noteRepository.GetAll();
+
+            if (postId != 0)
+            {
+               notes = notes.Where(note => note.Post.Id == _postId).ToList();
+            }
+
             for (int i = 0; i < notes.Count; i++)
             {
                 Note note = notes[i];
@@ -109,8 +116,8 @@ namespace TabloidCLI.UserInterfaceManagers
             }
         }
         private void Remove()
-        {
-            Note noteToDelete = Choose("Which note would you like to remove?");
+        {   
+            Note noteToDelete = Choose("Which note would you like to remove?", _postId);
             if (noteToDelete != null)
             {
                 _noteRepository.Delete(noteToDelete.Id);
