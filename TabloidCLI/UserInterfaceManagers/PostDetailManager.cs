@@ -57,6 +57,11 @@ namespace TabloidCLI.UserInterfaceManagers
         private void View()
         {
             Post post = _postRepository.Get(_postId);
+            List<Tag> matchingTags = _tagRepository.GetPostTags(_postId);
+            foreach ( Tag tag in matchingTags )
+            {
+                Console.WriteLine($"Tag: {tag.Name}");
+            }
             Console.WriteLine($"Title: {post.Title}");
             Console.WriteLine($"URL: {post.Url}");
             Console.WriteLine($"Publication Date: {post.PublishDateTime}");

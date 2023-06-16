@@ -43,8 +43,7 @@ namespace TabloidCLI
 
         public Journal Get(int id) 
         {
-            //finish later
-            return null;
+            throw new NotImplementedException();
         }
 
         public void Insert(Journal journal) 
