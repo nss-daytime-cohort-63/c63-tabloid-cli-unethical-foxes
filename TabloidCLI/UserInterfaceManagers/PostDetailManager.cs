@@ -41,7 +41,8 @@ namespace TabloidCLI.UserInterfaceManagers
                     View();
                     return this;
                 case "2":
-                    //
+                    CreatePostTag();
+                    return this;
                 case "3":
                     //
                 case "4":
@@ -65,6 +66,31 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.WriteLine($"Title: {post.Title}");
             Console.WriteLine($"URL: {post.Url}");
             Console.WriteLine($"Publication Date: {post.PublishDateTime}");
+        }
+
+        private void CreatePostTag()
+        {
+            List<Tag> allTags = _tagRepository.GetAll();
+
+            for (int i = 0; i < allTags.Count; i ++)
+            {
+                Tag tag = allTags[i];
+                Console.WriteLine($" {i + 1}) {tag.Name}");
+            }
+            Console.Write("> ");
+            string input = Console.ReadLine();
+            try
+            {
+                int choice = int.Parse(input);
+            
+            var userChoice = allTags[choice - 1];
+                _postRepository.InsertPostTag(_postId, userChoice.Id);
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Invalid Selection");
+                
+            }
         }
 
     }
