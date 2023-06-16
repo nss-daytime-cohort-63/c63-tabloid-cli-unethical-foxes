@@ -122,3 +122,7 @@ INSERT INTO Tag ( Name ) VALUES ( 'nerdy' );
 
 INSERT INTO Journal ( Title, Content, CreateDateTime ) VALUES ( 'My Big Day', 'I had a big day today. Would you believe I saw a dog????', '2020-04-30' ) ;
 
+INSERT INTO Note (Title, Content, CreateDateTime, PostId) VALUES ('Great Reads', 'Machine Learning and YOU! How to befriend the AI that plans to steal your job!', '2023-03-03');
+INSERT INTO Note (Title, Content, CreateDateTime, PostId) VALUES ('UI UX', 'Designing intuitive applications!', '2023-01-20')
+INSERT INTO Note (Title, Content, CreateDateTime, PostId) VALUES ('Happy Computers', 'Managing data storage and optimizing your computer to work for you!', '2022-10-13')
+
