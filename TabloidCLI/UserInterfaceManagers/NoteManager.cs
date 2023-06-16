@@ -68,11 +68,15 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.WriteLine("Add Note");
             Note note = new Note();
 
+            note.Post = _postRepository.Get(_postId);
+
             Console.Write("Title: ");
             note.Title = Console.ReadLine();
 
             Console.Write("Text content: ");
             note.Content = Console.ReadLine();
+
+            note.CreateDateTime = DateTime.Now;
 
             _noteRepository.Insert(note);
         }
@@ -81,7 +85,5 @@ namespace TabloidCLI.UserInterfaceManagers
         {
            //
         }
-
-        
     }
 }
