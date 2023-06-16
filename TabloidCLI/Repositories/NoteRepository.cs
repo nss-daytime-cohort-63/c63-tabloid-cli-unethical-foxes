@@ -93,7 +93,21 @@ namespace TabloidCLI
 
         public void Insert(Note note)
         {
-            //
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"INSERT INTO Note (Title, Content, CreateDateTime, PostId)
+                                VALUES (@Title, @Content, @CreationDate, @PostId)";
+                    cmd.Parameters.AddWithValue("@Title", note.Title);
+                    cmd.Parameters.AddWithValue("@Content", note.Content);
+                    cmd.Parameters.AddWithValue("@CreationDate", note.CreateDateTime);
+                    cmd.Parameters.AddWithValue("@PostId", note.Post.Id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
 
         public void Update(Note note)
