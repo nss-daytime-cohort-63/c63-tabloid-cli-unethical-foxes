@@ -73,7 +73,6 @@ namespace TabloidCLI.UserInterfaceManagers
 
             Console.Write("Text content: ");
             note.Content = Console.ReadLine();
-
             _noteRepository.Insert(note);
         }
 
