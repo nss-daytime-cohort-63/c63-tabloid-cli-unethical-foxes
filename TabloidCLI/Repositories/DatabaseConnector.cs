@@ -10,8 +10,6 @@ namespace TabloidCLI.Repositories
         private readonly string _connectionString;
         protected SqlConnection Connection => new SqlConnection(_connectionString);
 
-        public string ConnectionString => _connectionString;
-
         public DatabaseConnector(string connectionString)
         {
             _connectionString = connectionString;
