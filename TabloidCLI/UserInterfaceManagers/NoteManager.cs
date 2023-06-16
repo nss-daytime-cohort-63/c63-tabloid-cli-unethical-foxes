@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using TabloidCLI.Models;
 using TabloidCLI.Repositories;
 
@@ -55,8 +56,9 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void List()
         {
-            List<Note> notes = _noteRepository.GetAll();
-            foreach (Note note in notes)
+            List<Note> allNotes = _noteRepository.GetAll();
+            List<Note> filteredNotes = allNotes.Where(note => note.Post.Id == _postId).ToList();
+            foreach (Note note in filteredNotes)
             {
                 Console.WriteLine(note);
             }
