@@ -44,7 +44,8 @@ namespace TabloidCLI.UserInterfaceManagers
                     CreatePostTag();
                     return this;
                 case "3":
-                    //
+                    DeletePostTag();
+                    return this;
                 case "4":
                     return new NoteManager(this, _connectionString, post.Id);
                 case "0":
@@ -93,5 +94,28 @@ namespace TabloidCLI.UserInterfaceManagers
             }
         }
 
+        public void DeletePostTag()
+        {
+            List<PostTag> postTags = _postRepository.GetPosttags(_postId);
+            Console.WriteLine("Please choose a tag to delete from this post:");
+            for(int i = 0; i < postTags.Count;i ++) 
+            {
+                PostTag postTag = postTags[i];
+                Console.WriteLine($" {i + 1}) {postTag.Tag.Name}");
+            }
+            Console.Write("> ");
+
+            string input = Console.ReadLine();
+            try
+            {
+                int choice = int.Parse(input);
+                PostTag postTagToDelete = postTags[choice - 1];
+                _postRepository.DeletePosttag(postTagToDelete);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Invalid Selection");
+            }
+        }
     }
 }
