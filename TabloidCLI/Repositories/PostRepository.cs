@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using Microsoft.Data.SqlClient;
 using TabloidCLI.Models;
+using TabloidCLI.Repositories;
+using TabloidCLI.UserInterfaceManagers;
 
 namespace TabloidCLI.Repositories
 {
@@ -248,6 +250,56 @@ namespace TabloidCLI.Repositories
 
                     cmd.ExecuteNonQuery();
                 }
+            }
+        }
+
+        public List<PostTag> GetPosttags(int postId)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand()) 
+                {
+                    cmd.CommandText = @"SELECT pt.Id as Id, pt.PostId as PostId, t.Id AS tagId , t.Name as tagName FROM PostTag pt
+                                        JOIN Tag t ON pt.TagId = t.Id
+                                        WHERE PostId = @id";
+                    cmd.Parameters.AddWithValue("@id", postId );
+
+                    List<PostTag> allPostTags = new List<PostTag>();
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        PostTag postTag = new PostTag
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            PostId = reader.GetInt32(reader.GetOrdinal("PostId")),
+                            Tag = new Tag
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("tagId")),
+                                Name = reader.GetString(reader.GetOrdinal("tagName"))
+                            }
+                        };
+                        allPostTags.Add(postTag);
+                    }
+                    reader.Close();
+                    return allPostTags;
+                }
+            }
+        }
+
+        public void DeletePosttag(PostTag ptToDelete)
+        {
+            using (SqlConnection conn = Connection) 
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"DELETE FROM PostTag WHERE id = @id";
+                    cmd.Parameters.AddWithValue("@id", ptToDelete.Id);
+
+                    cmd.ExecuteNonQuery();
+                }    
             }
         }
     }
